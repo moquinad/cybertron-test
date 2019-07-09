@@ -112,45 +112,114 @@ const clients = [
   }
 ]
 
+const fullname = o => `${prop('firstName', o)} ${prop('lastName', o)}`
+
 export default function() {
   /* Level 2 - colors */
 
   const ex1 =
     'Use map to return a concatenated first and last name of each client.'
   const exercise1 = _ => {
-    return []
+    const toFullName = function(client) {
+      return {fullname: fullname(client)}
+    }
+    return map(toFullName, clients)
   }
 
   const ex2 = 'Use filter to return clients from Wyoming'
   const exercise2 = _ => {
-    return []
+    const fromWyoming = function(client) {
+      if(prop('state') = 'Wyoming') {
+        return client
+      }
+    }
+    return filter(fromWyoming, clients)
   }
 
   const ex3 = 'Use reduce to count the number of people with green eyes '
   const exercise3 = _ => {
-    return 0
+    const greenEyes = function(acc, val) {
+      if(prop('eyeColor') = 'green') {
+        return acc + 1
+      }
+    }
+    return reduce(greenEyes, 0, clients)
   }
 
   const ex4 = `Use map, filter and reduce with compose to return the full name (as a string) of the female from Wyoming. `
   const exercise4 = _ => {
-    return null
+    const toFullName = function(client) {
+      return fullname(client)
+    }
+    const femaleFullName = map(toFullName)
+    // const female = function(client) {
+    //   if(prop('gender') = 'female') {
+    //     return client
+    //   }
+    // }
+    // const fromWyoming = function(client) {
+    //   if(prop('state') = 'Wyoming') {
+    //     return client
+    //   }
+    // }
+    const female = filter(prop('female'))
+    const fromWyoming = filter(prop('Wyoming'))
+    const concatName = function(acc, val) {
+      return acc + val.fullname
+    }
+    const reduced = reduce(concatName, '')
+
+    return compose(
+      reduced,
+      fromWyoming,
+      female,
+      femaleFullName
+    )(clients)
   }
 
   const ex5 =
     'Use map and filter to return the full address of the clients living in North Carolina'
   const exercise5 = _ => {
-    return []
+    const fullAddress = function(client) {
+      return `${prop(address)}`
+    }
+    const mappedAddress = map(fullAddress)
+    const fromNC = filter(prop('North Carolina'))
+    return compose(
+      fromNC,
+      mappedAddress
+    )(clients)
   }
 
   const ex6 = 'use filter to remove anyone over the age of 25'
   const exercise6 = _ => {
-    return []
+    const over25 = function(client) {
+      if(prop('age') > 25) {
+        return client
+      }
+    }
+    return filter(over25, clients)
   }
 
   const ex7 =
     'use reduce to count the number of males, age 22 - 27, who have green eyes'
   const exercise7 = _ => {
-    return 0
+    const greenEyes = function(client) {
+      if(prop('eyeColor') = 'green') {
+        return client
+      }
+    }
+    const filterEyes = filter(greenEyes)
+    const reducer = function(acc, val) {
+      if(prop('age') >= 22 && prop('age') <= 27) {
+        return acc + 1
+      }
+    }
+    const reduced = reduce(reducer, 0)
+    return compose(
+      reduced,
+      filterEyes
+    )(clients)
   }
 
   /* tests to validate exercises go here */
