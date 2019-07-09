@@ -7,19 +7,28 @@ export default function() {
   const ex1 = 'use map to cube (n³) each value and return'
   const exercise1 = _ => {
     const numbers = [3, 6, 9, 12, 15, 18]
-    return [] // return answer here
+    const cuber = function(x) {
+      return Math.pow(x, 3)
+    }
+    return map(cuber, numbers) 
   }
 
   const ex2 = 'use filter to only return numbers divisible by 6'
   const exercise2 = _ => {
     const numbers = [28, 42, 55, 66, 72, 84, 93]
-    return [] // return answer here
+    const divBy6 = function(x) {
+      return x % 6 === 0
+    }
+    return filter(divBy6, numbers)
   }
 
   const ex3 = 'use reduce to sum the numbers'
   const exercise3 = _ => {
     const numbers = [10, 20, 30, 40, 50, 60]
-    return 0 // return answer here
+    const reducer = function(acc, val) {
+      return acc + val
+    }
+    return reduce(reducer, 0, numbers)
   }
 
   const ex4 = `use compose to run the following three commands
@@ -30,19 +39,43 @@ export default function() {
 `
   const exercise4 = _ => {
     const numbers = [1, 3, 6, 10, 13, 16]
-    return 0 // return answer here
+    const triple = function(x) {
+      return x * 3
+    }
+    const tripleNums = map(triple)
+    const evens = function(x) {
+      return x % 2 === 0
+    }
+    const onlyEvens = filter(evens)
+    const reducer = function(acc, val) {
+      return acc + val
+    }
+    const result = reduce(reducer, 0)
+    return compose(
+      result,
+      onlyEvens,
+      tripleNums
+    )(numbers)
   }
 
   const ex5 = 'Use map to find the square root of each number'
   const exercise5 = _ => {
     const numbers = [9, 16, 25, 36, 49, 64, 81]
-    return [] // return answer here
+    const sqrt = function(x) {
+      return Math.sqrt(x)
+    }
+    return map(sqrt, numbers)
   }
 
   const ex6 = 'use filter to return numbers between 10 and 20'
   const exercise6 = _ => {
     const numbers = [1, 5, 6, 3, 10, 12, 18, 21, 28, 34, 39, 45]
-    return [] // return answer here
+    const range = function(x) {
+      if(x >= 10 && x <=20) {
+        return x
+      }
+    }
+    return filter(range, numbers)
   }
 
   const ex7 = `use compose and the checkPrimes function to run the following three commands:
@@ -56,7 +89,23 @@ export default function() {
   `
   const exercise7 = _ => {
     const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    return 0 // return answer here
+    const subOne = function(x) {
+      return x - 1
+    }
+    const numMinusOne = map(subOne)
+    const primes = function(x) {
+      return checkPrimes(x)
+    }
+    const primeNums = filter(primes)
+    const reducer = function(acc, val) {
+      return acc + 1
+    }
+    const primeCount = reduce(reducer, 0)
+    return compose(
+      primeCount,
+      primeNums,
+      numMinusOne
+    )(numbers)
   }
 
   /* tests to validate exercises go here */
